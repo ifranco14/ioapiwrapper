@@ -1,4 +1,5 @@
 import requests
+from io_api_wrapper import settings
 
 
 class IOBase:
@@ -203,6 +204,11 @@ class IOWrapper(IOBase):
         payload = {}
 
         if grant_type == "password":
+
+            if not username and not password:
+                username = settings.USER
+                password = settings.PWD
+
             payload = {
                 "username": username,
                 "password": password,
@@ -216,7 +222,7 @@ class IOWrapper(IOBase):
 
         url = self.api + self.URL_TOKEN
 
-        response = requests.post(url, json=payload)
+        response = requests.post(url, data=payload)
 
         json_response = response.json()
 
